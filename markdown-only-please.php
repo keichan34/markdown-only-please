@@ -33,7 +33,18 @@ class MarkdownOnlyPlease {
   }
 
   public function process_markdown( $content ) {
-    return Markdown::defaultTransform($content);
+    global $post;
+    $found = false;
+    $cache_key = 'post-' . $post->ID . '-' . $post->post_modified_gmt;
+    $out = wp_cache_get($cache_key, 'MarkdownOnlyPlease', false, $found);
+    if (!$found) {
+      $out = Markdown::defaultTransform($content);
+
+      // 86400 seconds = 24 hours
+      wp_cache_set($cache_key, $out, 'MarkdownOnlyPlease', 86400);
+    }
+
+    return $out;
   }
 }
 
