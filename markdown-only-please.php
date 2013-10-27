@@ -8,7 +8,9 @@
  * License: MIT
  */
 
-require_once (dirname(__FILE__) . '/lib/Michelf/Markdown.php');
+if (!class_exists('Markdown')) {
+  require_once (dirname(__FILE__) . '/lib/Michelf/Markdown.php');
+}
 
 class MarkdownOnlyPlease {
   function __construct() {
